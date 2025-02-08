@@ -45,14 +45,20 @@
             responseDiv.innerHTML = "Thinking...";
 
             try {
-                const res = await fetch("http://127.0.0.1:5000/ask", {  // Change this if your API uses another port
+                const res = await fetch("http://127.0.0.1:5000/ask", {  // Make sure the port is correct
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ question })
                 });
 
                 const data = await res.json();
-                responseDiv.innerHTML = `<strong>Response:</strong> <p>${data.response}</p>`;
+                
+                // Updated to match your Flask API response format
+                if (data.reply) {
+                    responseDiv.innerHTML = `<strong>Response:</strong> <p>${data.reply}</p>`;
+                } else {
+                    responseDiv.innerHTML = `<strong>Error:</strong> Invalid response format.`;
+                }
             } catch (error) {
                 responseDiv.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
             }
